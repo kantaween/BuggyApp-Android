@@ -1,5 +1,6 @@
 package scb.academy.jinglebell.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import scb.academy.jinglebell.R
+import scb.academy.jinglebell.activity.SongInfoActivity
 import scb.academy.jinglebell.adapter.OnSongClickListener
 import scb.academy.jinglebell.adapter.SongAdapter
 import scb.academy.jinglebell.extension.showToast
@@ -36,6 +38,10 @@ class SongListFragment : Fragment(), OnSongClickListener {
 
         override fun onResponse(call: Call<SongSearchResult>, response: Response<SongSearchResult>) {
             context?.showToast("Success")
+            val songs = response.body()?.results
+            if (songs != null) {
+                songAdapter.submitList(songs)
+            }
         }
     }
 
@@ -43,10 +49,12 @@ class SongListFragment : Fragment(), OnSongClickListener {
         super.onViewCreated(view, savedInstanceState)
         rvSongs = view.findViewById(R.id.rv_rooms)
         songAdapter = SongAdapter(this)
-        rvSongs.adapter = songAdapter
-        rvSongs.layoutManager = LinearLayoutManager(context)
-        rvSongs.itemAnimator = DefaultItemAnimator()
-        rvSongs.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        rvSongs.apply {
+            adapter = songAdapter
+            layoutManager = LinearLayoutManager(context)
+            itemAnimator = DefaultItemAnimator()
+            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        }
 
         loadSongs()
     }
@@ -56,6 +64,9 @@ class SongListFragment : Fragment(), OnSongClickListener {
     }
 
     override fun onSongClick(song: Song) {
-
+        this.context!!.let {
+            SongInfoActivity.startActivity(it, song)
+        }
+        // SongInfoActivity.startActivity(, song)
     }
 }
