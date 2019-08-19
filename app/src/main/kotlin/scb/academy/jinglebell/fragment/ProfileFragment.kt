@@ -18,9 +18,9 @@ class ProfileFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val _view = inflater.inflate(R.layout.fragment_profile, container, false)
-        val name = _view.profileName.text.toString()
 
         _view.profileButton.setOnClickListener {
+            val name = _view.profileName.text.toString()
             this.context!!.let {
                 ProfileSummitActivity.startActivity(it, name)
             }

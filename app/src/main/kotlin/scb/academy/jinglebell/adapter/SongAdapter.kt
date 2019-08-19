@@ -27,11 +27,7 @@ class SongAdapter(private val listener: OnSongClickListener)
     }
 
     override fun getItemCount(): Int {
-        return if (songs.count() == 0) {
-            0
-        } else {
-            songs.count() + 1
-        }
+        return songs.size
     }
 
     fun submitList(list: List<Song>) {
@@ -55,7 +51,6 @@ class SongItemViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         tvSongArtist.text = song.artistName
         tvSongPrice.text = "${song.price} ${song.priceCurrency}"
         ivSongArtwork.setImageUrl(song.artworkUrl)
-
         itemView.setOnClickListener { listener.onSongClick(song) }
     }
 
